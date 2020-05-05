@@ -8,8 +8,6 @@ public class User {
 	private String  sex;
 	
 	
-	
-	
 	public User(Integer id, String name, Integer age, String sex) {
 		super();
 		this.id = id;
@@ -17,6 +15,8 @@ public class User {
 		this.age = age;
 		this.sex = sex;
 	}
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -41,6 +41,8 @@ public class User {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
+	
+	
 	
 	
 	
