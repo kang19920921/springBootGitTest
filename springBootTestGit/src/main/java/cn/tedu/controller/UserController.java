@@ -30,6 +30,13 @@ public class UserController {
 		
 	}
 	
+	@RequestMapping("/findAll/{id}")
+	public List<User> findAllUserByRedis(@PathVariable Integer id)  {
+	
+		return userService.findAll(id);
+		
+	}
+	
 	
 	
 	
