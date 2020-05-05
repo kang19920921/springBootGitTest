@@ -11,7 +11,7 @@ spring:
 
 mybatis:
   typeAliasesPackage: cn.tedu.pojo
-  mapperLocations: classpath:mappers/*.xml
+  mapperLocations: classpath:mybatis/mappers/*.xml
 
 logging:
   level: 
