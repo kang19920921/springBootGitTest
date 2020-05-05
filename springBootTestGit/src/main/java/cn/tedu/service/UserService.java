@@ -8,5 +8,7 @@ public interface UserService {
 	
 	List<User> findAll(Integer id );
 	
+	List<User> findAllById(Integer id );
+	
 
 }

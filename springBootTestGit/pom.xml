@@ -41,6 +41,19 @@
 			<artifactId>druid-spring-boot-starter</artifactId>
 			<version>1.1.0</version>
 		</dependency>
+		
+		
+		<!--spring整合redis -->
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+		</dependency>
+
+				
   </dependencies>
   
 </project>

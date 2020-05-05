@@ -12,6 +12,10 @@
 	<select id="findAll" resultType="cn.tedu.pojo.User" parameterType="Integer" >  
 	    select * from user where id != #{id}
     </select>
+    
+     <select id="findAllById" resultType="cn.tedu.pojo.User" parameterType="Integer" >  
+	    select * from user where id = #{id}
+    </select>
 	
 	   
 </mapper>

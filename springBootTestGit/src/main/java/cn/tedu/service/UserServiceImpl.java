@@ -19,5 +19,12 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return userMapper.findAll(id);
 	}
+	
+	
+	
+	public List<User> findAllById(Integer id) {
+		// TODO Auto-generated method stub
+		return userMapper.findAllById(id);
+	}
 
 }
