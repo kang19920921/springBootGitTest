@@ -2,6 +2,8 @@ package cn.tedu.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +22,8 @@ public class UserController {
 	private UserService userService;	
 	@Autowired
 	private JedisCluster jedis;
+	@Autowired
+	private AmqpTemplate amqpTemplate;
 	
 	
 	
@@ -34,19 +38,15 @@ public class UserController {
 	
 	@RequestMapping("/findRedis/{id}")
 	@ResponseBody //避免被当做路径，不走视图解析器
-//	[{"id":58,"name":"如花","age":40,"sex":"男"}]  String
-//	[{"id":58,"name":"如花","age":40,"sex":"男"}]  List<User>
 	public List<User>  findAllUserByRedis(@PathVariable String id)  {
 		List<User>  list  = new ArrayList<>();
 		System.out.println(jedis.toString());
 		
 		//1 先从缓存中获取
-//		 String id = "1";
          String userList =  jedis.get("User:"+id);
 		if (userList!=null) {
 			System.out.println("userList " + userList);
 			return ObjectMapperUtil.toObject(userList, list.getClass()) ;
-//			return  userList;
 		}	
 		//缓存查询不到结果再从数据库中查询
 		list = userService.findAllById(Integer.valueOf(id));		
@@ -58,6 +58,42 @@ public class UserController {
 		return list;
 		
 	}
+	
+	  @RequestMapping("/sendUserByMq/{name}/{age}/{sex}")
+	  @ResponseBody
+      public String   insertUser(User user) {
+    	  
+		  amqpTemplate.convertAndSend("testQueue1",user);
+		  System.out.println(user);
+    	      	  
+		return "发送数据到mq成功！！！";   	     	  
+      }
+	
+	
+//	  @RequestMapping("/sendUserByMq/{name}/{age}/{sex}")
+//	  @ResponseBody
+//      public String   insertUser(User user) {
+//    	  
+//		  amqpTemplate.convertAndSend("testQueue",user);
+//		  System.out.println(user);
+//    	      	  
+//		return "发送数据到mq成功！！！";   	     	  
+//      }
+//	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

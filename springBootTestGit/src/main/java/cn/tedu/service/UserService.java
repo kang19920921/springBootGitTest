@@ -10,5 +10,8 @@ public interface UserService {
 	
 	List<User> findAllById(Integer id );
 	
+	
+//	List<User> selectList(Integer id );
+	
 
 }

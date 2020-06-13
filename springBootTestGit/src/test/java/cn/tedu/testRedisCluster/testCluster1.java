@@ -1,3 +1,4 @@
+package cn.tedu.testRedisCluster;
 
 
 import java.util.HashSet;

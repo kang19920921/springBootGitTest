@@ -1,13 +1,33 @@
 package cn.tedu.pojo;
 
-public class User {
+import java.io.Serializable;
+
+import lombok.experimental.Accessors;
+
+
+@Accessors(chain = true)
+public class User implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5082205083787861269L;
 	private Integer id ;
 	private String  name;
 	private Integer age;
 	private String  sex;
 	
 	
+	
+	
+	
+	
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public User(Integer id, String name, Integer age, String sex) {
 		super();
 		this.id = id;
@@ -17,6 +37,12 @@ public class User {
 	}
 	
 	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", age=" + age + ", sex=" + sex + "]";
+	}
+
+
 	public Integer getId() {
 		return id;
 	}
