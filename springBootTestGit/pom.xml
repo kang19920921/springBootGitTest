@@ -3,8 +3,7 @@
   <groupId>com.tedu</groupId>
   <artifactId>springBootTestGit</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  
-  
+   
     <parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -30,15 +29,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid-spring-boot-starter</artifactId>
@@ -51,6 +53,7 @@
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-redis</artifactId>
@@ -63,19 +66,15 @@
 			<artifactId>spring-boot-starter-amqp</artifactId>
 		</dependency>
 		
-<!-- <dependency>
-		    <groupId>com.baomidou</groupId>
-		    <artifactId>mybatis-plus</artifactId>
-		    <version>3.3.2</version>
-		</dependency> -->
+
 		
-	<!--spring整合mybatis-plus -->
+	    <!--spring整合mybatis-plus -->
 		<dependency>
 		    <groupId>com.baomidou</groupId>
 		    <artifactId>mybatis-plus-boot-starter</artifactId>
 		    <version>3.2.0</version>
 		</dependency>
-		
+			
 		
 		
 	    <!--引入插件lombok 自动的set/get/构造方法插件 -->
@@ -85,8 +84,20 @@
 		</dependency>
 		
 		
+	    <!-- 添加AOP坐标 -->
+       <dependency>
+           <groupId>org.springframework.boot</groupId>
+           <artifactId>spring-boot-starter-aop</artifactId>
+       </dependency>
 		
 		
+      <!-- https://mvnrepository.com/artifact/com.oracle/ojdbc6 -->
+	  <dependency>
+	      <groupId>com.oracle</groupId>
+	      <artifactId>ojdbc6</artifactId>
+	      <version>11.2.0.3</version>
+	       <type>jar</type>
+	   </dependency>
 		
 		
 
