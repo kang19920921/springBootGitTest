@@ -11,16 +11,15 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Getter
 @Setter
-public class User  extends BaseObject implements Serializable {
+public class UserTest extends BaseObject implements Serializable {
 	
 
 	private static final long serialVersionUID = -5082205083787861269L;
 	private Date date = new Date();
-	private Integer id ;
+//	private Integer id ;
 	private String  name;
 	private Integer age;
 	private String  sex;
-	private Company company;
 	
 
 }
