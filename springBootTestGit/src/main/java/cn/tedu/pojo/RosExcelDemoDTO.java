@@ -33,7 +33,7 @@ public class RosExcelDemoDTO extends RosExcelBaseDTO {
     @RosExcel(name = "班级",column = "D" ,width = 6000,horizontal = HorizontalAlignment.LEFT, combo = {"三期提高班", "四期提高班","五期提高班"  })
     private String clazz;
 	
-    @RosExcel(name = "公司", column = "D" ,width = 6000 ,horizontal = HorizontalAlignment.LEFT)
+    @RosExcel(name = "公司", column = "E" ,width = 6000 ,horizontal = HorizontalAlignment.LEFT)
 	private String  company;
 	
     @RosExcel(name = "成功" ,column = "F")
