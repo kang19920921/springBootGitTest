@@ -2,7 +2,6 @@ package cn.tedu.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +13,7 @@ import cn.tedu.Utils.ObjectMapperUtil;
 import cn.tedu.pojo.User;
 import cn.tedu.service.UserService;
 import redis.clients.jedis.JedisCluster;
+
 
 @Controller
 @RequestMapping("/user")
@@ -47,7 +47,7 @@ public class UserController {
          String userList =  jedis.get("User:"+id);
 		if (userList!=null) {
 			System.out.println("userList " + userList);
-			return ObjectMapperUtil.toObject(userList, list.getClass()) ;
+			return ObjectMapperUtil.toObject(userList, list.getClass());
 		}	
 		//缓存查询不到结果再从数据库中查询
 		list = userService.findAllById(Integer.valueOf(id));		
@@ -62,7 +62,7 @@ public class UserController {
 	
 	  @RequestMapping("/sendUserByMq/{name}/{age}/{sex}")
 	  @ResponseBody
-      public String   insertUser(@Validated  User user) {
+      public String insertUser(@Validated  User user) {
     	  
 		  amqpTemplate.convertAndSend("testQueue1",user);
 		  System.out.println(user);
@@ -82,22 +82,4 @@ public class UserController {
 //      }
 //	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

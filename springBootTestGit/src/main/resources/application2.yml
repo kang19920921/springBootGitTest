@@ -7,21 +7,10 @@ server:
 spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
-        druid:
-          kangLu-master1: # 主数据源
-            driver-class-name: com.mysql.jdbc.Driver
-            url: jdbc:mysql://127.0.0.1:3306/jtdb
-            username: root
-            password: 123456
-          kangLu-master2: # 主数据源
-            driver-class-name: com.mysql.jdbc.Driver
-            url: jdbc:oracle:thin:@localhost:1521:ORCL
-            username: scott
-            password: kang    
-        
-        
-        
-        
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/jtdb
+        username: root
+        password: 123456
     rabbitmq:
         host: 192.168.2.7
         port: 5672
@@ -35,7 +24,7 @@ spring:
 #            acknowledge-mode: manual 
             
 #            spring.rabbitmq.listener.direct.acknowledge-mode=manual
-#            spring.rabbitmq.listener.simple.acknowledge-mode=manual
+#            spring.rabbitmq.listener.simple.acknowledge-mode=m
 
 #mybatis:
 #  typeAliasesPackage: cn.tedu.pojo

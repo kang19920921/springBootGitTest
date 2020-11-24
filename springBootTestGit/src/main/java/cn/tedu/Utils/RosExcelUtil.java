@@ -3,6 +3,7 @@ package cn.tedu.Utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.DVConstraint;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -28,13 +30,11 @@ import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddressList;
-
+import org.springframework.web.multipart.MultipartFile;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.util.IOUtils;
-
-import com.sun.tools.internal.ws.processor.ProcessorException;
-
 import cn.tedu.annotation.RosExcel;
+import cn.tedu.bo.RosExcelReadResultBO;
 import cn.tedu.pojo.RosExcelBaseDTO;
 import cn.tedu.pojo.RosExcelDemoDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +43,8 @@ import lombok.extern.slf4j.Slf4j;
 public class RosExcelUtil<T extends RosExcelBaseDTO > {
 	
 	public static final int DEFAULT_MAX_ROWNUM = 65525;
+	
+	public static final String SUFFIX_XLS_2003 = ".xls";
 	
 	private final SimpleDateFormat  sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
@@ -107,7 +109,57 @@ public class RosExcelUtil<T extends RosExcelBaseDTO > {
 				
 	}
     
+    /**
+     * 读取excel文件
+     * @author Captkang
+     * @date: 2020年11月22日下午4:43:57
+     * @param file
+     * @return
+     */
+    public RosExcelReadResultBO<T> readExcel(MultipartFile file ){
+		return readExcel(file,DEFAULT_MAX_ROWNUM);   	
+    }
 	
+		
+	/**
+	 * 
+	 * @author Captkang
+	 * @date: 2020年11月22日下午4:43:35
+	 * @param file
+	 * @param defaultMaxRownum
+	 * @return
+	 */
+	private RosExcelReadResultBO<T> readExcel(MultipartFile file, int defaultMaxRownum) {
+		try {
+			// 校验文件格式
+			assertIsEXcel2003(file.getOriginalFilename());
+			return readExcel(file.getInputStream(), DEFAULT_MAX_ROWNUM);
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Exception e) {
+			log.error("读取excel文件数据异常", e);
+			throw new RuntimeException("读取excel文件数据异常");
+		}
+	}
+
+
+	private RosExcelReadResultBO<T> readExcel(InputStream inputStream, int defaultMaxRownum) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	private void assertIsEXcel2003(String originalFilename) {
+		if(!isExcel2003(originalFilename)) {
+			throw new RuntimeException("文件格式有误，仅支持" + SUFFIX_XLS_2003 +"格式");
+		}
+	}
+	
+	public static boolean isExcel2003(String fileName) {
+		return StringUtils.isBlank(fileName) ? false : fileName.endsWith(SUFFIX_XLS_2003);	
+	}
+
+
 	//导出数据
 	/**
 	 * 
@@ -130,7 +182,7 @@ public class RosExcelUtil<T extends RosExcelBaseDTO > {
 			//执行导出excel文件
 			excuteExportExcel(dateLsitArr, sheetNames,os);
 
-		} catch (ProcessorException e) {
+		} catch (RuntimeException e) {
 			throw e;
 		}catch (Exception e) {
 			log.error("导出excel文件异常", e);
@@ -172,7 +224,7 @@ public class RosExcelUtil<T extends RosExcelBaseDTO > {
 			}
 			os.flush();
 			workbook.write(os);
-		}catch (ProcessorException e) {
+		}catch (RuntimeException e) {
 			throw e;
 		}catch (Exception e) {
 			throw new RuntimeException("执行导出excel文件异常");
@@ -262,7 +314,7 @@ public class RosExcelUtil<T extends RosExcelBaseDTO > {
 			// TODO Auto-generated method stub
 			return value;
 
-		} catch (ProcessorException  e) {
+		} catch (RuntimeException  e) {
 			throw e;
 		} catch (Exception e) {
 			log.warn("获取字段值失败" , e);

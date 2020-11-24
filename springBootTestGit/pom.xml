@@ -18,12 +18,26 @@
 
 	<dependencies>
 	
+	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.11</version>
+		</dependency>
+	
+	
 <!-- 	<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>1.3.0</version>
 		</dependency> -->
-		
+	
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.28</version>
+		</dependency>
+			
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -98,9 +112,13 @@
 	      <version>11.2.0.3</version>
 	       <type>jar</type>
 	   </dependency>
-		
-		
-
+	   
+	   <!--excel  -->
+	   <dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>4.1.2</version>
+		</dependency>
 			
   </dependencies>
   
