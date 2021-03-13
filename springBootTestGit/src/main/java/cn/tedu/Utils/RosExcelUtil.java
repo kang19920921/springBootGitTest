@@ -1,17 +1,19 @@
 package cn.tedu.Utils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.DVConstraint;
@@ -19,6 +21,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFDataValidation;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -35,6 +38,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.util.IOUtils;
 import cn.tedu.annotation.RosExcel;
 import cn.tedu.bo.RosExcelReadResultBO;
+import cn.tedu.enums.ProcessCodeEnum;
+import cn.tedu.exception.ProcessException;
 import cn.tedu.pojo.RosExcelBaseDTO;
 import cn.tedu.pojo.RosExcelDemoDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -56,16 +61,47 @@ public class RosExcelUtil<T extends RosExcelBaseDTO > {
 	
 	
 	public static void main(String[] args) throws Exception {
-		testExport();
+		testImort();
+//		testExport();
 //		System.out.println(getExcelCol("A"));
 	}
 
 
-	private static void testExport() throws Exception {
-		//初始化数据
-		List<RosExcelDemoDTO> list  =  new ArrayList<RosExcelDemoDTO>();
+	private static void testImort() {
+
+		File file = new File("E:\\excel\\test001.xls");
+		System.out.println(file.getAbsolutePath());
+		FileInputStream  input = null;
+		try {
+			input = new FileInputStream(file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		RosExcelUtil<RosExcelDemoDTO> util = new RosExcelUtil<RosExcelDemoDTO>(RosExcelDemoDTO.class);// 创建工具类		
+		util.importExcel(input);
 		
-		RosExcelDemoDTO demoDTO =  new RosExcelDemoDTO();
+	}
+	
+	/***
+	 *导入excel 
+	 * @author Captkang
+	 * @date: 2020年12月19日下午2:15:49
+	 * @param input
+	 * @param defaultMaxRownums
+	 */
+	private  void  importExcel(InputStream input) {
+		 RosExcelReadResultBO<T> result  = this.readExcel( input,  DEFAULT_MAX_ROWNUM);
+		 System.out.println(result.getDataList());
+	}
+	
+
+
+	private static void testExport() throws Exception {
+		// 初始化数据
+		List<RosExcelDemoDTO> list = new ArrayList<RosExcelDemoDTO>();
+
+		RosExcelDemoDTO demoDTO = new RosExcelDemoDTO();
 		demoDTO.setId(3);
 		demoDTO.setName("张三");
 		demoDTO.setAge(33);
@@ -73,8 +109,8 @@ public class RosExcelUtil<T extends RosExcelBaseDTO > {
 		demoDTO.setCompany("公司3");
 		demoDTO.setDate(new Date());
 		list.add(demoDTO);
-		
-		RosExcelDemoDTO demoDTO2 =  new RosExcelDemoDTO();
+
+		RosExcelDemoDTO demoDTO2 = new RosExcelDemoDTO();
 		demoDTO2.setId(4);
 		demoDTO2.setName("李四");
 		demoDTO2.setAge(44);
@@ -82,9 +118,8 @@ public class RosExcelUtil<T extends RosExcelBaseDTO > {
 		demoDTO2.setCompany("公司4");
 		demoDTO2.setDate(new Date());
 		list.add(demoDTO2);
-		
-		
-		RosExcelDemoDTO demoDTO3 =  new RosExcelDemoDTO();
+
+		RosExcelDemoDTO demoDTO3 = new RosExcelDemoDTO();
 		demoDTO3.setId(5);
 		demoDTO3.setName("王五");
 		demoDTO3.setAge(55);
@@ -92,23 +127,23 @@ public class RosExcelUtil<T extends RosExcelBaseDTO > {
 		demoDTO3.setCompany("公司5");
 		demoDTO3.setDate(new Date());
 		list.add(demoDTO3);
-		
-		
-		File  file  = new  File("E:\\excel\\test001.xls");
+
+		File file = new File("E:\\excel\\test001.xls");
 		System.out.println(file.getAbsolutePath());
 		file.createNewFile();
-		FileOutputStream  out  = null;
+		FileOutputStream out = null;
 		try {
 			out = new FileOutputStream(file);
-		}catch(FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
-	    RosExcelUtil<RosExcelDemoDTO> util = new RosExcelUtil<RosExcelDemoDTO>(RosExcelDemoDTO.class);//创建工具类
-	    util.exportExcel(list , "学生信息" ,out);//导出数据
-				
+
+		RosExcelUtil<RosExcelDemoDTO> util = new RosExcelUtil<RosExcelDemoDTO>(RosExcelDemoDTO.class);// 创建工具类
+		util.exportExcel(list, "学生信息", out);// 导出数据
+
 	}
     
+	
     /**
      * 读取excel文件
      * @author Captkang
@@ -141,11 +176,259 @@ public class RosExcelUtil<T extends RosExcelBaseDTO > {
 			throw new RuntimeException("读取excel文件数据异常");
 		}
 	}
+	
+
+	
 
 
-	private RosExcelReadResultBO<T> readExcel(InputStream inputStream, int defaultMaxRownum) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * 读取excel文件
+	 * 
+	 * @author Captkang
+	 * @date: 2020年12月7日下午9:51:59
+	 * @param inputStream
+	 * @param defaultMaxRownum
+	 * @return
+	 */
+	private RosExcelReadResultBO<T> readExcel(InputStream input, int defaultMaxRownums) {
+		long startTime = System.currentTimeMillis();
+		HSSFWorkbook workbook = null;
+		try {
+			log.info("===== 读取excel文件start ===");
+			RosExcelReadResultBO<T> resultBO = new RosExcelReadResultBO<>();
+			workbook = new HSSFWorkbook(input);
+			HSSFSheet sheet = workbook.getSheetAt(0);
+			int physicalRowNums = sheet.getPhysicalNumberOfRows(); // 有效记录的行数
+			ValidateUtil.assertTrueWarm(physicalRowNums > 1, "没有需要导入的数据");
+			ValidateUtil.assertTrueWarm(physicalRowNums <= defaultMaxRownums + 1, "允许导入的最大行数： " + defaultMaxRownums);
+			// 得到实体类所有通过注解映射了数据表的字段
+			List<Field> fieldList = getAnnotatonField(clazz, null);
+			log.info("得到实体类所有通过注解映射了数据表的字段:{} ",fieldList.toString());
+			// 校验标题的正确性
+			assertTitleFormatOk(sheet.getRow(0), fieldList);
+			// 从第二行开始，遍历所有行获取数据
+			for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+				try {
+					// 读取一行数据
+					readLine(sheet, i, fieldList, resultBO);
+					log.info(i +" resultBO "+ resultBO.toString());
+				} catch (Exception e) {
+					/**
+					 * 吞掉异常，不影响其他行数据的读取
+					 */
+					String lineErrorMsg = new StringBuffer().append("读取第").append(i + 1).append("行数据位置异常").toString();
+					log.error(lineErrorMsg, e);
+				}
+
+			}
+			log.info("读取到有效记录数为：{},无效记录数为：{}", resultBO.getDataList().size(), resultBO.getFailInfoBOList().size());
+			return resultBO;
+		} catch (ProcessException e) {
+			throw e;
+		} catch (Exception e) {
+			log.error("读取excel文件数据异常", e);
+			throw ProcessCodeEnum.PROCESS_ERR.buildException("读取excel文件异常!!!");
+		} finally {
+			IOUtils.close(workbook);
+			IOUtils.close(input);
+			log.info("=== 读取excel文件end ===, 耗时：{}毫秒", System.currentTimeMillis() - startTime);
+		}
+	}
+
+    
+	/**
+	 * 
+	 * @author Captkang
+	 * @date: 2020年12月13日下午3:55:01
+	 * @param sheet
+	 * @param i
+	 * @param fieldList
+	 * @param resultBO
+	 */
+	private void readLine(HSSFSheet sheet, int i, List<Field> fieldList, RosExcelReadResultBO<T> resultBO) {
+			HSSFRow row  = sheet.getRow(i);
+			if(row == null) {
+				//空行,跳过
+				return;
+			}
+			List<String> errorTitleNameList = new ArrayList<>(); // 存放取值错误的的标题名称列表
+			boolean readSuccessFlag = true; // 获取该行所有字段成功标识: true-成功， false-失败
+			T entity = null;
+			String titleName = null;
+			for (int j = 0; j < fieldList.size(); j++) {
+				try {
+					Field  field = fieldList.get(j);
+					field.setAccessible(true);
+					RosExcel  annotation = field.getAnnotation(RosExcel.class);
+					int col = getExcelCol(annotation.column());// 获得第几列
+					titleName = annotation.name();
+					// 获取field对应的单元格
+					HSSFCell cell = row.getCell(col);
+					if(cell == null) {
+						continue;
+					}
+					// 获取单元格中的值
+					String value = getCellValue(cell);	
+					if(StringUtils.isBlank(value)) {
+						continue;
+					}
+					if(entity == null ) {
+						entity = clazz.newInstance();
+						entity.setLineNo(i + 1);
+ 					}
+					value = value.trim();
+					// 根据实体类字段的类型给字段赋值
+					setFieldValue(entity,field, value);					
+			} catch (Exception e) {
+				readSuccessFlag = false;
+				errorTitleNameList.add(titleName);
+				String fieldWarming = new StringBuffer().append("第").append(i + 1).append("行，字段[").append(titleName)
+						.append("]取值异常").toString();
+				log.warn(fieldWarming, e);
+			}	
+			}
+			
+			if(readSuccessFlag) {
+				resultBO.addData(entity);
+			} else {
+				String lineWarmMsg = new StringBuffer().append("第").append(i+1).append("行,字段").append(errorTitleNameList).append("取值异常").toString();
+				log.warn(lineWarmMsg);
+				resultBO.addFailInfo(i, "以下字段取值有误：" + errorTitleNameList);
+			}
+			
+			
+			
+	}
+
+	/**
+	 * 根据实体类字段的类型给字段赋值
+	 * 
+	 * @author Captkang
+	 * @date: 2020年12月19日下午1:20:20
+	 * @param entity
+	 * @param field
+	 * @param value
+	 */
+	private	 void   setFieldValue(T entity,Field field,String value){		
+		try {
+			Class<?>  fieldType = field.getType();
+			if(String.class == fieldType) {
+				field.set(entity, value);
+			} else if(Character.TYPE == fieldType) {
+				field.set(entity, Character.valueOf(value.charAt(0)));
+			} else if(Byte.TYPE == fieldType || Byte.class == fieldType) {
+				field.set(entity, Byte.valueOf(value));
+			} else if(Short.TYPE == fieldType  || Short.class ==  fieldType) {
+				field.set(entity, Short.valueOf(value));
+			}else if(Integer.TYPE == fieldType || Integer.class == fieldType) {
+				field.set(entity, Integer.valueOf(value));
+			}else if(Long.TYPE == fieldType || Long.class == fieldType) {
+				field.set(entity, Long.valueOf(value));
+			}else if(Float.TYPE == fieldType || Float.class == fieldType) {
+				field.set(entity, Float.valueOf(value));
+			}else if(Double.TYPE == fieldType || Double.class == fieldType) {
+				field.set(entity, Double.valueOf(value));
+			}else if(Boolean.TYPE == fieldType || Boolean.class == fieldType) {
+				field.set(entity, Boolean.valueOf(value));
+			}else if(java.util.Date.class == fieldType) {
+				field.set(entity, sdf.parse(value));
+			}else if(java.math.BigDecimal.class == fieldType) {
+				field.set(entity, new BigDecimal(value));
+			}else {
+				throw ProcessCodeEnum.PARM_WARM.buildException("暂不支持的字段类型，请联系管理员" + fieldType);
+			}
+		} catch (ProcessException e) {
+			throw e;
+		} catch (Exception e) {
+		    throw ProcessCodeEnum.PARM_WARM.buildException("字段赋值失败", e);
+		}
+		
+	}
+	
+	
+    /**
+     * 从cell中获取值
+     * 
+     * @author Captkang
+     * @date: 2020年12月13日下午9:56:46
+     * @param cell
+     * @return
+     */
+	private String getCellValue(HSSFCell cell) {
+		String value = "";
+		//以下是判断数据的类型
+		switch (cell.getCellType()) { 
+		case NUMERIC:
+			if (HSSFDateUtil.isCellDateFormatted(cell)) {
+				Date date = cell.getDateCellValue();
+				if (date != null) {
+					value = sdf.format(date);
+				} else {
+					value = "";
+				}
+			} else {
+				double numericCellValue = cell.getNumericCellValue();
+				value = String.valueOf(numericCellValue);
+				if(value.indexOf("E") > 0 ) {
+					//处理科学计数法
+					value = new DecimalFormat("0").format(numericCellValue);
+				}
+				//处理excel单元格输入123，却读取结果为123.0的情况
+				if(value.endsWith(".0")) {
+					value = value.replace(".0", "");
+				}				
+			}			
+			break;
+		case STRING: // 字符串
+			value = cell.getStringCellValue();
+			break;
+		case BOOLEAN:			
+			value = cell.getBooleanCellValue() + "";
+			break;
+		case FORMULA: // 公式
+			value = cell.getCellFormula() + "";
+			break;
+		case BLANK: //空值
+	        value = "";
+	    	break;
+		case ERROR: //故障
+			throw ProcessCodeEnum.PARM_WARM.buildException("非法字符");
+	    default:
+	    	throw ProcessCodeEnum.PARM_WARM.buildException("未知的字段类型");		
+		}		
+		return value;
+	}
+
+
+	/**
+	 * 断言标题栏格式正确
+	 * 
+	 * @author Captkang
+	 * @date: 2020年12月7日下午10:28:46
+	 * @param row
+	 * @param fieldList
+	 */
+	private void assertTitleFormatOk(HSSFRow titleRow, List<Field> fieldList) {
+		for (int j = 0; j < fieldList.size(); j++) {
+			Field  field  = fieldList.get(j);
+			RosExcel  annotation  =  field.getAnnotation(RosExcel.class);
+			// 获取标题栏期望的名称
+			String  titleName = annotation.name();
+			titleName = StringUtils.isBlank(titleName) ? "" : titleName.trim();
+			// 获取标题栏实际的名称
+			int col = getExcelCol(annotation.column());// 获取field为第几列
+			String value = titleRow.getCell(col).getStringCellValue();
+			value = StringUtils.isBlank(value) ? "" : value.trim();
+			// 检查标题栏名称是否正确
+			if(!StringUtils.equals(titleName, value)) {
+				StringBuilder sb = new StringBuilder();
+				sb.append("标题栏有误: 第").append(annotation.column()).append("列期望为[").append(titleName).append("],实际为").append(value).append("]");
+				throw ProcessCodeEnum.PARM_WARM.buildException(sb.toString());
+			}
+			
+			
+		}
+		
 	}
 
 
@@ -310,17 +593,13 @@ public class RosExcelUtil<T extends RosExcelBaseDTO > {
 			} else {
 				value = JSON.toJSONString(obj);
 			}
-
-			// TODO Auto-generated method stub
 			return value;
-
 		} catch (RuntimeException  e) {
 			throw e;
 		} catch (Exception e) {
 			log.warn("获取字段值失败" , e);
 			throw new RuntimeException("获取字段值失败");
 		}
-
 	}
 
 

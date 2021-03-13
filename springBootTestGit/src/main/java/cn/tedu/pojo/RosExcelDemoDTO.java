@@ -21,11 +21,13 @@ public class RosExcelDemoDTO extends RosExcelBaseDTO {
 	private static final long serialVersionUID = -5220295492986205691L;
 	
 	
-	@RosExcel(name = "姓名", column = "B" ,isEXport = true )
-	private String name;
+
 	
     @RosExcel(name = "序号" ,column= "A")
     private Integer id;
+    
+	@RosExcel(name = "姓名", column = "B" ,isEXport = true )
+	private String name;
     
     @RosExcel(name = "年龄", column = "C" ,prompt = "年龄保密哦" , isEXport = false )
     private Integer age;

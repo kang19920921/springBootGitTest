@@ -2,14 +2,17 @@ package cn.tedu.bo;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import cn.tedu.pojo.BaseObject;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * RosExcelUtil工具类读取excel文件结果
  * @author Captkang
  * @date: 2020年11月22日下午4:06:11
  */
+@Setter
+@Getter
 public class RosExcelReadResultBO<T> extends BaseObject {
 
 	private static final long serialVersionUID = -7824921363132949327L;
