@@ -330,9 +330,9 @@ public class RosExcelUtil<T extends RosExcelBaseDTO > {
 				field.set(entity, Double.valueOf(value));
 			}else if(Boolean.TYPE == fieldType || Boolean.class == fieldType) {
 				field.set(entity, Boolean.valueOf(value));
-			}else if(java.util.Date.class == fieldType) {
+			}else if(Date.class == fieldType) {
 				field.set(entity, sdf.parse(value));
-			}else if(java.math.BigDecimal.class == fieldType) {
+			}else if(BigDecimal.class == fieldType) {
 				field.set(entity, new BigDecimal(value));
 			}else {
 				throw ProcessCodeEnum.PARM_WARM.buildException("暂不支持的字段类型，请联系管理员" + fieldType);

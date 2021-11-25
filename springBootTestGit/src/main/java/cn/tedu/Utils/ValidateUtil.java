@@ -72,7 +72,7 @@ public class ValidateUtil {
 	 * @param errMsg
 	 */
 	public static void assertFalseWarn(boolean flag,String errMsg) {
-		assertTrue(flag, errMsg, ProcessCodeEnum.PARM_WARM);
+		assertFalse(flag, errMsg, ProcessCodeEnum.PARM_WARM);
 	}
 	
 	
