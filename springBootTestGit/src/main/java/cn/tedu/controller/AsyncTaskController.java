@@ -22,6 +22,8 @@ public class AsyncTaskController {
 	@ResponseBody
 	public ResultVO<String> asyncImportTask(String str) {
 		log.info("进入 controller 啦啦啦 ");
+		log.info("gittest");
+
 		asyncImportService.importTest(str);
 		return ProcessCodeEnum.SUCCESS.buildSuccessResultVO();		
 	}	
