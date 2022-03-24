@@ -1,11 +1,11 @@
 package cn.tedu.pojo;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 
 @Accessors(chain = true)
@@ -21,6 +21,4 @@ public class User  extends BaseObject implements Serializable {
 	private Integer age;
 	private String  sex;
 	private Company company;
-	
-
 }

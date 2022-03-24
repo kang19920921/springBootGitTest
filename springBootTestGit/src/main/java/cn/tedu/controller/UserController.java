@@ -1,22 +1,29 @@
 package cn.tedu.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import cn.tedu.FindAllListInputDTO;
+import cn.tedu.Utils.ObjectMapperUtil;
+import cn.tedu.enums.ProcessCodeEnum;
+import cn.tedu.pojo.ResultVO;
+import cn.tedu.pojo.User;
+import cn.tedu.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import cn.tedu.Utils.ObjectMapperUtil;
-import cn.tedu.pojo.User;
-import cn.tedu.service.UserService;
 import redis.clients.jedis.JedisCluster;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
 	
 	@Autowired
@@ -30,10 +37,10 @@ public class UserController {
 	
 	@RequestMapping("/findAll")
 	@ResponseBody
-	public List<User> findAllUser()  {
-	
-		return userService.findAll(1);
-		
+	public ResultVO<List<User>> findAllUser(@RequestBody  FindAllListInputDTO inputDTO) {
+		log.info("FindAllListInputDTO={}", inputDTO);
+		List<User> result = userService.findAll(inputDTO.getIdUser());
+		return ProcessCodeEnum.SUCCESS.buildSuccessResultVO(result);
 	}
 	
 	
