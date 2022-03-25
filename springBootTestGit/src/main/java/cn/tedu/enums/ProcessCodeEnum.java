@@ -1,14 +1,15 @@
 package cn.tedu.enums;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import cn.tedu.exception.ProcessException;
+import cn.tedu.pojo.ResultVO;
+import lombok.Getter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import cn.tedu.exception.ProcessException;
-import cn.tedu.pojo.ResultVO;
+import java.util.ArrayList;
+import java.util.List;
 
+@Getter
 public enum ProcessCodeEnum {
 
 	SUCCESS("0000", "成功"), FAIL("9999", "失败"), UNKNOWN("1111", "未知"), PROCESS_ERR("P999",

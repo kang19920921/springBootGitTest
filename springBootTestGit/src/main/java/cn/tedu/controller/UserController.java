@@ -37,7 +37,7 @@ public class UserController {
 	
 	@RequestMapping("/findAll")
 	@ResponseBody
-	public ResultVO<List<User>> findAllUser(@RequestBody  FindAllListInputDTO inputDTO) {
+	public ResultVO<List<User>> findAllUser(@RequestBody @Validated FindAllListInputDTO inputDTO) {
 		log.info("FindAllListInputDTO={}", inputDTO);
 		List<User> result = userService.findAll(inputDTO.getIdUser());
 		return ProcessCodeEnum.SUCCESS.buildSuccessResultVO(result);
