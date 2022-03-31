@@ -64,6 +64,11 @@ public enum ProcessCodeEnum {
 		return new ProcessException(code, message, e);
 	}
 
+
+	public ProcessException throwException(String message) {
+		throw new ProcessException(code, message);
+	}
+
 	public boolean equalsCode(String code) {
 		return this.code.equals(code);
 	}

@@ -1,16 +1,17 @@
-package cn.tedu;
+package cn.tedu.inputDTO;
 
 
 import cn.tedu.pojo.BaseObject;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 public class FindAllListInputDTO extends BaseObject {
 
-    @NotBlank(message = "用户id不能为空")
+    @NotNull(message = "用户id不能为空")
     private Integer idUser;
 
 }

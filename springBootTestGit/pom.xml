@@ -7,9 +7,10 @@
     <parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.4.RELEASE</version>
+		<version>2.1.12.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -17,15 +18,13 @@
 	</properties>
 
 	<dependencies>
-	
 	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-lang3</artifactId>
 		    <version>3.11</version>
 		</dependency>
-	
-	
+
 <!-- 	<dependency>-->
 <!--			<groupId>org.mybatis.spring.boot</groupId>-->
 <!--			<artifactId>mybatis-spring-boot-starter</artifactId>-->
@@ -60,7 +59,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid-spring-boot-starter</artifactId>
-			<version>1.1.0</version>
+			<version>1.1.10</version>
 		</dependency>
 		
 		
@@ -91,8 +90,7 @@
 		    <version>3.2.0</version>
 		</dependency>
 			
-		
-		
+
 	    <!--引入插件lombok 自动的set/get/构造方法插件 -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -112,7 +110,26 @@
 		    <artifactId>poi</artifactId>
 		    <version>4.1.2</version>
 		</dependency>
-			
-  </dependencies>
+
+		<dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+        </dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+
+		<!--同一使用slf4j-->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+		</dependency>
+
+
+
+
+	</dependencies>
   
 </project>

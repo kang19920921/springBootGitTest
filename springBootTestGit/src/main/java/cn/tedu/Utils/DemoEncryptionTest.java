@@ -1,8 +1,13 @@
 package cn.tedu.Utils;
 
+import cn.tedu.inputDTO.FindAllListInputDTO;
+import cn.tedu.enums.ProcessCodeEnum;
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.codec.digest.DigestUtils;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -14,17 +19,24 @@ public class DemoEncryptionTest {
     public static final String  secret = "123456789";
 
     public static void main(String[] args) {
-       log.info("第一次加密调用测试,努努努力");
-       String url = "127.0.0.1:90";
+        log.info("第一次加密调用测试,努努努力");
+        String url = "http://localhost:8070/user/findAll";
         try {
-//            buildRequestParams();
-//         HttpClientUtils.httpPost()
+            String aesKey = UUIDUtils.getUUID16();
+            log.info("AES_KEY={}", aesKey);
 
+
+
+            FindAllListInputDTO findAllListInputDTO = new FindAllListInputDTO();
+            findAllListInputDTO.setIdUser(6);
+            String strParam = buildRequestParams(findAllListInputDTO, UUIDUtils.getUUID16(), aesKey);
+            //请求
+            String resultJSONOStr= HttpClientUtils.httpPost(url, strParam);
+            //解析返回结果
+            parseResponse(resultJSONOStr,aesKey);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     /**
@@ -41,6 +53,9 @@ public class DemoEncryptionTest {
         reqMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
 
         //AES加密业务参数
+        System.out.println("明文业务数据businessParams=");
+        System.out.println(businessParams);
+        System.out.println("\r\n");
         String requestDataEnc = AESUtils.encrypt(JSONObject.toJSONString(businessParams), aesKey);
         reqMap.put("requestDataEnc", requestDataEnc);
         System.out.println("用AES算法加密后的业务数据");
@@ -68,6 +83,43 @@ public class DemoEncryptionTest {
 
         return reqMapJSONStr;
     }
+
+
+   private static  String parseResponse(String resultStr,String aesKey) {
+       log.info("请求接口返回的结果resultStr= " + resultStr);
+       if (StringUtils.isBlank(resultStr)) {
+           log.info("result is null");
+           throw new RuntimeException("接口请求异常，请稍后重试");
+       }
+
+       JSONObject responseJson = null;
+       try {
+           responseJson = JSON.parseObject(resultStr);
+       } catch (Exception ex) {
+           throw new RuntimeException("接口请求异常，请稍后重试,e");
+       }
+
+       if (null == responseJson) {
+           log.info("responseJson is blank");
+           throw new RuntimeException("接口请求异常，请稍后重试");
+       }
+
+       String responseCode = responseJson.getString("resultCode");
+       if (!"0000".equals(responseCode)) {//业务异常
+           String responseMsg = responseJson.getString("resultMsg");
+           ProcessCodeEnum.PROCESS_ERR.throwException(responseMsg);
+       }
+
+       String responseDataEnc = responseJson.getString("resultObject");//密文
+       if (StringUtils.isBlank(responseDataEnc)) {
+           return null;
+       }
+
+       String responseDataDec = AESUtils.decrypt(responseDataEnc, aesKey);//明文
+       log.info("解密后的明文responseDataDec={} ", resultStr);
+
+       return responseDataDec;
+   }
 
 
 

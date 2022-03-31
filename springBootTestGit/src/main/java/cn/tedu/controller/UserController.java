@@ -1,6 +1,6 @@
 package cn.tedu.controller;
 
-import cn.tedu.FindAllListInputDTO;
+import cn.tedu.inputDTO.FindAllListInputDTO;
 import cn.tedu.Utils.ObjectMapperUtil;
 import cn.tedu.enums.ProcessCodeEnum;
 import cn.tedu.pojo.ResultVO;
@@ -39,8 +39,15 @@ public class UserController {
 	@ResponseBody
 	public ResultVO<List<User>> findAllUser(@RequestBody @Validated FindAllListInputDTO inputDTO) {
 		log.info("FindAllListInputDTO={}", inputDTO);
-		List<User> result = userService.findAll(inputDTO.getIdUser());
-		return ProcessCodeEnum.SUCCESS.buildSuccessResultVO(result);
+		log.debug("debug");
+
+		log.info("info");
+
+		log.error("error");
+
+		log.warn("warn");
+//		List<User> result = userService.findAll(inputDTO.getIdUser());
+		return ProcessCodeEnum.SUCCESS.buildSuccessResultVO(null);
 	}
 	
 	
