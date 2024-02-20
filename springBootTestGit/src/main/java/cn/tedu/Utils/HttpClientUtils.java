@@ -57,7 +57,7 @@ public class HttpClientUtils
             }
             CloseableHttpResponse result = httpClient.execute(httpPost);
             // 请求发送成功，并得到响应
-            if (result.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            if (result.getStatusLine().getStatusCode() == HttpStatus.SC_OK ||result.getStatusLine().getStatusCode() == HttpStatus.SC_INTERNAL_SERVER_ERROR ) {
                 try {
                     // 读取服务器返回过来的json字符串数据
                     resultStr = EntityUtils.toString(result.getEntity(), "utf-8");

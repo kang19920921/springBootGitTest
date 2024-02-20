@@ -14,6 +14,7 @@ public class OtWrapperedRequest extends HttpServletRequestWrapper {
     //这里map需要指定为 Map<String, String[]> 类型
     private Map<String, String[]> params = new HashMap<>();
 
+
     /**
      * 构造方法，将原有请求中的参数复制到当前类的params中
      * @param request

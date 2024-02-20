@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import redis.clients.jedis.JedisCluster;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -39,6 +42,7 @@ public class UserController {
 	@ResponseBody
 	public ResultVO<List<User>> findAllUser(@RequestBody @Validated FindAllListInputDTO inputDTO) {
 		log.info("FindAllListInputDTO={}", inputDTO);
+
 		log.debug("debug");
 
 		log.info("info");
@@ -46,8 +50,9 @@ public class UserController {
 		log.error("error");
 
 		log.warn("warn");
-//		List<User> result = userService.findAll(inputDTO.getIdUser());
-		return ProcessCodeEnum.SUCCESS.buildSuccessResultVO(null);
+//		throw ProcessCodeEnum.PARM_WARM.buildException("测试一下异常");
+		List<User> result = userService.findAll(inputDTO.getIdUser());
+		return ProcessCodeEnum.SUCCESS.buildSuccessResultVO(result);
 	}
 	
 	

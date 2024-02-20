@@ -86,7 +86,7 @@ public class ValidateUtil {
 	 * @param processCodeEnum
 	 */
 	private static void assertNotNull(Object obj,String errMsg,ProcessCodeEnum processCodeEnum) {
-		if(!isNull(obj)) {
+		if(isNull(obj)) {
 			throw processCodeEnum.buildException(errMsg);
 		}
 	}	
@@ -161,7 +161,7 @@ public class ValidateUtil {
 		}
 		if (obj instanceof String) {
 			String str = (String) obj;
-			return StringUtils.isNotBlank(str);
+			return StringUtils.isBlank(str);
 		} else if (obj instanceof Collection) {
 			Collection<?> coll = (Collection<?>) obj;
 			return CollectionUtils.isEmpty(coll);

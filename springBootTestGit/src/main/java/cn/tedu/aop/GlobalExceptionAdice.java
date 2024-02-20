@@ -25,8 +25,9 @@ public class GlobalExceptionAdice {
     @ResponseBody
     @ExceptionHandler(value = ProcessException.class)
     public ResultVO<Object> ProcessExceptionHandler(ProcessException exception) {
+        System.out.println("==========*******捕捉到了异常++++++++++=======");
         String errorCode = exception.getErrorCode();
-        if (ProcessCodeEnum.warmLogEnumListContains(errorCode)) {
+        if (ProcessCodeEnum.noLogEnumListContains(errorCode)) {
             //不记录日志
         } else if (ProcessCodeEnum.warmLogEnumListContains(errorCode)) {
             log.warn("拦截自定义异常： [{}] {}\n\r", errorCode, exception.getMessage(), exception);
